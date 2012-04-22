@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>PDS HIRISE Mobile - International Space Apps Challenge</title>
+
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+	<script src="index.js"></script>
+	<link rel="stylesheet"  href="index.css" />
+</head> 
+<body> 
+<div data-role="page" class="type-home" id="home">
+	<div data-role="content">
+		
+		<div id="map"></div>
+
+		<a id="github" href="https://github.com/SpaceAppsCH/PDS-HiRISE-Mobile">
+		  <span>#SpaceAppsCH</span>
+		  <span>Fork me on GitHub!</span>
+		</a>
+	</div>	
+
+	<div data-role="footer" data-id="foo1" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#home">Mars Map</a></li>
+				<li><a href="#about">Credits</a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->	
+</div>
+
+<div data-role="page" id="about">
+
+	<div data-role="header">
+		<h1>About</h1>
+	</div><!-- /header -->
+	
+	<div data-role="content">	
+
+		<p>This app was developed at EPFL in Lausanne, Switzlerand as part of the 1st International Space Apps Challenge. Please <a href="https://github.com/SpaceAppsCH/PDS-HiRISE-Mobile/wiki/Overview">visit our wiki</a> for more background.</p>
+		
+		<p><b>The Challenge:</b> develop a tool for citizen scientists, educators, and students to access  NASA’s Planetary Data System data sets, which is available at <a href="http://pds.nasa.gov/" rel="nofollow">http://pds.nasa.gov/</a> -
+<a href="http://spaceappschallenge.org/challenge/nasa-planetary-data-system-interface/" rel="nofollow">more details</a></p>
+
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-id="foo1" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#home">Mars Map</a></li>
+				<li><a href="#about">Credits</a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<!-- Load OpenLayers -->
+<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
+</body>
+</html>
