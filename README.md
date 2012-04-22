@@ -18,4 +18,4 @@ This project was started at the 1st International Space App Challenge, April 21-
 ## Advisors
 
 - Dr. Anton Ivanov, EPFL
-- Prof. Prasenjit Saha, University of Zurich
+- Dr. Prasenjit Saha, University of Zurich
