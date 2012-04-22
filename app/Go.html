@@ -24,16 +24,24 @@
 			var map = new OpenLayers.Map('map' );
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
 
-			var terrapagesStreetLayer = new OpenLayers.Layer.XYZ("Mars", "tiles/${z}/${x}/${y}.png",
+//			var terrapagesStreetLayer = new OpenLayers.Layer.XYZ("Mars", "tiles/${z}/${x}/${y}.png",
+// { sphericalMercator: false, attribution: "Mars" } );
+
+			var terrapagesStreetLayer = new OpenLayers.Layer.XYZ("Mars", 
+			"http://209.236.123.24/images/test1/tiles/tile-${x}-${y}-${z}.jpg",
 { sphericalMercator: false, attribution: "Mars" } );
 
 
- shade = new OpenLayers.Layer.WMS("Shaded Relief",
-                "http://gisdata.usgs.gov/wmsconnector/com.esri.wms.Esrimap?ServiceName=USGS_EDC_Elev_NED_3",
-                {layers: "HR-NED.IMAGE", reaspect: "false", transparent: 'true'},
-                {isBaseLayer: false, opacity: 1});
-            map.addLayers([terrapagesStreetLayer, shade]);
-            
+
+
+ // shade = new OpenLayers.Layer.WMS("Shaded Relief",
+ //               "http://gisdata.usgs.gov/wmsconnector/com.esri.wms.Esrimap?ServiceName=USGS_EDC_Elev_NED_3",
+ //               {layers: "HR-NED.IMAGE", reaspect: "false", transparent: 'true'},
+ //               {isBaseLayer: false, opacity: 0.1});
+ 
+ //           map.addLayers([terrapagesStreetLayer, shade]);
+             map.addLayers([terrapagesStreetLayer]);
+             
             map.addControl(new OpenLayers.Control.LayerSwitcher());
        
 

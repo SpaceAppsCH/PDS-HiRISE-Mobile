@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+	<head>
+	<style>
+		html,body {
+			height: 99%;
+			width: 99%;
+		}
+		#map {
+			width: 100%;
+			height: 100%;
+			border: 1px solid black;
+		}	
+	</style>
+	<script src='http://openlayers.org/api/OpenLayers.js'></script>
+	</head>
+	<body>
+		<div id='map'></div>
+		<script type="text/javascript">
+var map = new OpenLayers.Map('map',{maxResolution: 0.703125} );
+	//var map = new OpenLayers.Map('map' );
+// OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
+
+//			var terrapagesStreetLayer = new OpenLayers.Layer.XYZ("Mars", "tiles/${z}/${x}/${y}.png",
+// { sphericalMercator: false, attribution: "Mars" } );
+
+
+//			var terrapagesStreetLayer = new OpenLayers.Layer.XYZ("Mars", 
+// "http://david.portabella.me//pds-hirise-mobile/ESP_011400_1680_RED.QLOOK/tiles/tile-${x}-${y}-${z}.png",
+// { sphericalMercator: false, attribution: "Mars" } );
+//  "http://209.236.123.24/images/test1/tiles/tile-${x}-${y}-${z}.png",
+
+
+			var terrapagesStreetLayer = new OpenLayers.Layer.XYZ("Mars", 
+  "http://david.portabella.me/pds-hirise-mobile/ESP_011400_1680_RED.QLOOK/tiles/tile-${x}-${y}-${z}.png",
+ //  "http://209.236.123.24/images/test1/tiles/tile-${x}-${y}-${z}.png",
+     { sphericalMercator: false, attribution: "Mars" } );
+
+ shade = new OpenLayers.Layer.WMS("Shaded Relief",
+                "http://gisdata.usgs.gov/wmsconnector/com.esri.wms.Esrimap?ServiceName=USGS_EDC_Elev_NED_3",
+               {layers: "HR-NED.IMAGE", reaspect: "false", transparent: 'true'},
+                {isBaseLayer: false, opacity: 0.3}); 
+
+
+  var options = {numZoomLevels: 3, opacity: 0.3};
+   
+         var graphic = new OpenLayers.Layer.Image(
+                './tiles/NYC.png'',,
+            new OpenLayers.Bounds(-180, -88.759, 180, 88.759),
+             new OpenLayers.Size(580, 288),
+                options
+            );
+            
+   map.addLayers([terrapagesStreetLayer,shade])
+            
+//         map.addLayers(terrapagesStreetLayer);
+            
+         map.addControl(new OpenLayers.Control.LayerSwitcher());
+       
+
+			map.zoomToMaxExtent();
+
+	map.addControl(new OpenLayers.Control.OverviewMap(overviewOptions));
+map.addControl(new OpenLayers.Control.Navigation());
+map.addControl(new OpenLayers.Control.PanZoomBar({panIcons : false}));
+map.addControl(new OpenLayers.Control.ScaleLine());
+map.addControl(new OpenLayers.Control.LayerSwitcher());
+map.addControl(new OpenLayers.Control.Scale($('scale')));	
+		</script>
+	</body>
+</html>
+
+			
