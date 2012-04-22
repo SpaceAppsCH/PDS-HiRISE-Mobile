@@ -1,7 +1,6 @@
 This project is licensed under the MIT License:
 
-> Copyright (c) 2012: David Portabella, Steven Suckow, Oleg Lavrovsky,
-> Onja Ravelonjato, and other contributors:
+> Copyright (c) 2012: David Portabella, Steven Suckow, Oleg Lavrovsky, Onja Ravelonjato:
 > 
 > https://github.com/SpaceAppsCH/PDS-HiRISE-Mobile
 > 
