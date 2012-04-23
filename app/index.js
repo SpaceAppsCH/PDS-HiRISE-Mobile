@@ -1,4 +1,4 @@
-var map, hirise;
+var map, hirise, usa, graphic;
 
 $(document).ready(function() {
 
@@ -10,10 +10,7 @@ $(document).ready(function() {
         div: "map",
         zoom: 1,
         allOverlays: false,
-        maxResolution: 0.703125,
-/*        maxExtent: new OpenLayers.Bounds(
-            //1549471.9221, 6403610.94, 1550001.32545, 6404015.8
-        )*/
+        maxResolution: 0.703125
     });
     
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
@@ -43,23 +40,25 @@ $(document).ready(function() {
 	 //  "http://209.236.123.24/images/test1/tiles/tile-${x}-${y}-${z}.png",
 		 { sphericalMercator: false, attribution: "Mars", isBaseLayer:true } );
 
-/*	var usa = new OpenLayers.Layer.WMS("USA",
+	usa = new OpenLayers.Layer.WMS("USA",
                 "http://gisdata.usgs.gov/wmsconnector/com.esri.wms.Esrimap?ServiceName=USGS_EDC_Elev_NED_3",
                { layers: "HR-NED.IMAGE", reaspect: "false", transparent: "true" },
-               { isBaseLayer: false, opacity: 0.3 }); 
+               { isBaseLayer: false, opacity: 0.5 }); 
    
-	var nyc = new OpenLayers.Layer.Image(
-				'New York',
-				'tiles/NYC.png',
-				new OpenLayers.Bounds(-180, -88.759, 180, 88.759),
-				new OpenLayers.Size(580, 288),
-			   { isBaseLayer: false, opacity: 0.3 });
-*/
-   map.addLayers([hirise])
+	graphic = new OpenLayers.Layer.Image(
+                "EPFL",
+                "./tiles/EPFL.png",
+                new OpenLayers.Bounds(-100, -50, 12, 41),
+                new OpenLayers.Size(112, 91),
+                { isBaseLayer: false, opacity: 0.5 }
+            );
+
+   map.addLayers([hirise, graphic])
 
 	map.zoomIn();
+	map.moveByPx(-230, 0)
 
-    //map.addControl(new OpenLayers.Control.LayerSwitcher());
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
     //map.zoomToMaxExtent();
 
 });
