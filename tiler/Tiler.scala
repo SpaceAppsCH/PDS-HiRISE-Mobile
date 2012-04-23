@@ -8,23 +8,25 @@
   Creates tiles for the input image to use with http://wiki.openstreetmap.org/wiki/OpenLayers
 
   To run:
-  > scalac Test3.scala && scala -J-Xms512M -J-Xmx1500M Test3 full.png tiles/tile-#{x}-#{y}-#{z}.png
-  > scala -cp "Tile/out/production/Tile" -J-Xms512M -J-Xmx1500M Test3 test1/full.jpg "test1/tiles4/tile-#{x}-#{y}-#{z}.png"
+  > scalac Test3.scala && scala -J-Xms512M -J-Xmx1500M Test3 full.png tiles/tile-#{x}-#{y}-#{z}.png 2.0
+  > scala -cp "Tile/out/production/Tile" -J-Xms512M -J-Xmx1500M Test3 test1/full.jpg "test1/tiles4/tile-#{x}-#{y}-#{z}.png" 2.0
 
 
   Cygwin:
   Install: http://download.java.net/media/jai-imageio/builds/release/1.1/ -> jai_imageio-1_1-lib-windows-i586.exe
   > cd /cygdrive/u/test/
   > CLASSPATH="C:\Program Files\Sun Microsystems\JAI Image IO Tools 1.1\lib\clibwrapper_jiio.jar;C:\Program Files\Sun Microsystems\JAI Image IO Tools 1.1\lib\jai_imageio.jar"
-  > scala -cp "Tile/out/production/Tile;$CLASSPATH" -J-Xms512M -J-Xmx1500M Test3 test1/full.jpg "test1/tiles3/tile-#{x}-#{y}-#{z}.png"
-  > scala -cp "Tile/out/production/Tile;$CLASSPATH" -J-Xms512M -J-Xmx1500M Test3 ESP_011400_1680_RED.QLOOK/full.png "ESP_011400_1680_RED.QLOOK/tiles4/tile-#{x}-#{y}-#{z}.png"
-  > scala -cp "Tile/out/production/Tile;$CLASSPATH" -J-Xms1000M -J-Xmx4000M -J-mx1000m Test3 ESP_011400_1680_RED.QLOOK/full.jp2 "ESP_011400_1680_RED.QLOOK/tiles4/tile-#{x}-#{y}-#{z}.png"
+  > scala -cp "Tile/out/production/Tile;$CLASSPATH" -J-Xms512M -J-Xmx1500M Test3 test1/full.jpg "test1/tiles3/tile-#{x}-#{y}-#{z}.png" 2.0
+  > scala -cp "Tile/out/production/Tile;$CLASSPATH" -J-Xms512M -J-Xmx1500M Test3 ESP_011400_1680_RED.QLOOK/full.png "ESP_011400_1680_RED.QLOOK/tiles4/tile-#{x}-#{y}-#{z}.png" 2.0
+  > scala -cp "Tile/out/production/Tile;$CLASSPATH" -J-Xms1000M -J-Xmx4000M -J-mx1000m Test3 ESP_011400_1680_RED.QLOOK/full.jp2 "ESP_011400_1680_RED.QLOOK/tiles4/tile-#{x}-#{y}-#{z}.png" 2.0
 */
 
 import java.awt.image.BufferedImage
 import java.awt.RenderingHints
 import java.io.File
 import javax.imageio.ImageIO
+import scala.Int
+
 //import org.testng.annotations.Test
 
 
@@ -36,27 +38,28 @@ object Test3 {
       (string /: replacement) {(res, entry) => res.replaceAll("#\\{%s\\}".format(entry._1), entry._2.toString)}
   }
 
-//  def main3(args: Array[String]) {
+//  def main(args: Array[String]) {
 //    computeTiles(
-//      input = readImage("/david/Desktop/test/ESP_011400_1680_RED.QLOOK/full.png"),
-//      outputTemplateFilename = "/david/Desktop/test/ESP_011400_1680_RED.QLOOK/tiles/tile-#{x}-#{y}-#{z}.png",
+//      input = readImage("/david/Desktop/timemachine_excluded/pds-hirise-mobile_FILES/test4/full.jpg"),
+//      outputTemplateFilename = "/david/Desktop/timemachine_excluded/pds-hirise-mobile_FILES/test4/tiles/tile-#{x}-#{y}-#{z}.png",
 //      tileSize = new Size(256, 256),
-//      imageInFullZoomOutWidth = 600,
+//      imageInFullZoomOutWidth = 256,
 //      zoomOutIncrement = 2.0);
 //  }
-
+//
   def main(args: Array[String]) {
     computeTiles(
       input = readImage(args(0)),
       outputTemplateFilename = args(1),
       tileSize = new Size(256, 256),
       imageInFullZoomOutWidth = 256,
-      zoomOutIncrement = 2.0);
+      zoomOutIncrement = args(2).toDouble);
   }
 
 
 
   def computeTiles(input: BufferedImage, outputTemplateFilename: String, tileSize: Size, imageInFullZoomOutWidth: Int, zoomOutIncrement: Double) {
+    if (zoomOutIncrement != 2) { throw new Exception("TODO: it does not work yet for zoomOutIncrement != 2"); }
     val imageSize = new Size(input.getWidth, input.getHeight);
 //    val maxZoomOutFactor = imageSize.width / 600.0;
     val maxZoomOutFactor = imageSize.width / 256.0;
@@ -64,15 +67,14 @@ object Test3 {
   }
 
   def computeTiles(input: BufferedImage, outputTemplateFilename: String, tileSize: Size, imageInFullZoomOutWidth: Int, zoomOutIncrement: Double, maxZoomOutFactor: Double) {
-    var zoomIndex = 0;
-    var zoom = 1.0;
-    while (zoom <= maxZoomOutFactor) {
-      computeTiles(input, outputTemplateFilename richFormat Map("z" -> zoomIndex), tileSize, zoom);
-      zoomIndex = zoomIndex + 1;
-      zoom *= zoomOutIncrement;
-    }
+    val zoomList = buildZoomList(zoomOutIncrement, maxZoomOutFactor);
+    val zoomListReversed = zoomList.reverse;
+    zoomListReversed.indices.foreach(zoomIndexReversed => {
+      computeTiles(input, outputTemplateFilename richFormat Map("z" -> zoomIndexReversed), tileSize, zoomListReversed(zoomIndexReversed));
+    })
   }
 
+  // todo: the name "zoom" for this parameter is incorrect, it is the opposite.
   def computeTiles(input: BufferedImage, outputTemplateFilename: String, zoomedOutTileSize: Size, zoom: Double) {
     val srcImageSize = new Size(input.getWidth, input.getHeight);
 
@@ -92,6 +94,17 @@ object Test3 {
     })
   }
 
+  // todo: can this be done simpler?
+  def buildZoomList(zoomOutIncrement: Double, maxZoomOutFactor: Double) : List[Double] = {
+    return buildZoomList(zoomOutIncrement, maxZoomOutFactor, List(1.0));
+  }
+
+  def buildZoomList(zoomOutIncrement: Double, maxZoomOutFactor: Double, currentZoomList: List[Double]) : List[Double] = {
+    val nextZoom = currentZoomList.last * zoomOutIncrement;
+    if (nextZoom > maxZoomOutFactor)
+      return currentZoomList;
+    return buildZoomList(zoomOutIncrement, maxZoomOutFactor, currentZoomList ::: List(nextZoom));
+  }
 
   def readImage(filename: String) : BufferedImage = {
     println("read image: " + filename);
@@ -122,3 +135,38 @@ object Test3 {
   }
 }
 
+/*
+OLD:
+
+//  def main1(args: Array[String]) {
+//    computeTiles("input.png", "output-#{x}-#{y}.png", new Size(10240, 7680), new Size(256, 256), 2.0);
+//  }
+//
+//  def main2(args: Array[String]) {
+//    computeTiles(
+//      input = readImage("/david/Desktop/test/test1/full.jpg"),
+//      outputTemplateFilename = "/david/Desktop/test/test1/tiles/tile-#{x}-#{y}-#{z}.png",
+//      tileSize = new Size(256, 256),
+//      imageInFullZoomOutWidth = 600,
+//      zoomOutIncrement = 2.0);
+//  }
+//
+//  def main3(args: Array[String]) {
+//    computeTiles(
+//      input = readImage("/david/Desktop/test/ESP_011400_1680_RED.QLOOK/full.png"),
+//      outputTemplateFilename = "/david/Desktop/test/ESP_011400_1680_RED.QLOOK/tiles/tile-#{x}-#{y}-#{z}.png",
+//      tileSize = new Size(256, 256),
+//      imageInFullZoomOutWidth = 600,
+//      zoomOutIncrement = 2.0);
+//  }
+
+//    def main(args: Array[String]) {
+//      computeTiles(
+//        input = readImage("/david/Desktop/test/test3/full.jpg"),
+//        outputTemplateFilename = "/david/Desktop/test/test3/tiles/tile-#{x}-#{y}-#{z}.png",
+//        tileSize = new Size(256, 256),
+//        imageInFullZoomOutWidth = 256,
+//        zoomOutIncrement = 2.0);
+//    }
+
+ */
