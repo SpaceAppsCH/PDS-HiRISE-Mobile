@@ -9,11 +9,10 @@ This project was started at the 1st International Space App Challenge, April 21-
 
 ## Team members
 
-- David Portabella
-- Steven Suckow
-- Onja Ravelonjato
-- Oleg Lavrovsky
-- Franziska Oeschger
+- David Portabella https://github.com/dportabella
+- Steven Suckow https://github.com/stevensuckow
+- Onja Ravelonjato https://github.com/onjar
+- Oleg Lavrovsky https://github.com/loleg
 
 ## Advisors
 
