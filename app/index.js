@@ -16,7 +16,9 @@ $(document).ready(function() {
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
     
     var options = {numZoomLevels: 3};
-
+    
+    var baseUrl = "http://david.portabella.me/pds-hirise-mobile/ESP_011400_1680_RED.QLOOK/";
+    
 /*
     var hirise = new OpenLayers.Layer.Image(
             'HiRISE',
@@ -35,16 +37,18 @@ $(document).ready(function() {
 	map.addLayer(hirise);                
 */
 
-	hirise = new OpenLayers.Layer.XYZ("Mars", 
-	  "http://david.portabella.me/pds-hirise-mobile/ESP_011400_1680_RED.QLOOK/tiles/tile-${x}-${y}-${z}.png",
+	hirise = new OpenLayers.Layer.XYZ("HiRISE: Mars", 
+	  baseUrl + "tiles/tile-${x}-${y}-${z}.png",
 	 //  "http://209.236.123.24/images/test1/tiles/tile-${x}-${y}-${z}.png",
 		 { sphericalMercator: false, attribution: "Mars", isBaseLayer:true } );
 
+/*
 	usa = new OpenLayers.Layer.WMS("USA",
                 "http://gisdata.usgs.gov/wmsconnector/com.esri.wms.Esrimap?ServiceName=USGS_EDC_Elev_NED_3",
                { layers: "HR-NED.IMAGE", reaspect: "false", transparent: "true" },
                { isBaseLayer: false, opacity: 0.5 }); 
-   
+*/
+
 	graphic = new OpenLayers.Layer.Image(
                 "EPFL",
                 "./tiles/EPFL.png",
